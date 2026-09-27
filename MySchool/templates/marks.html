@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Results - MySchool</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="nav-brand">
+        🎓 MySchool
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('students') }}">
+            Students
+        </a>
+
+        <a href="{{ url_for('marks') }}">
+            Results
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Student Results</h1>
+
+            <p>
+                Manage examination marks and results.
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('add_marks') }}"
+           class="btn btn-primary">
+
+            + Add Marks
+
+        </a>
+
+    </div>
+
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="alert success-alert">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <div class="table-card">
+
+        {% if marks %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Student</th>
+                        <th>Roll No</th>
+                        <th>Subject</th>
+                        <th>Marks</th>
+                        <th>Percentage</th>
+                        <th>Exam</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in marks %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ item.name }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ item.roll_no }}
+                        </td>
+
+                        <td>
+                            {{ item.subject }}
+                        </td>
+
+                        <td>
+                            {{ item.marks }}
+                            /
+                            {{ item.max_marks }}
+                        </td>
+
+                        <td>
+
+                            {{
+                                "%.2f"|format(
+                                    (item.marks / item.max_marks) * 100
+                                )
+                            }}%
+
+                        </td>
+
+                        <td>
+                            {{ item.exam_type }}
+                        </td>
+
+                        <td>
+
+                            {% if (item.marks / item.max_marks) * 100 >= 40 %}
+
+                                <span class="status-active">
+                                    PASS
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-inactive">
+                                    FAIL
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('delete_marks', mark_id=item.id) }}"
+                                onsubmit="return confirm('Delete these marks?');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <h2>No Marks Found</h2>
+
+            <p>
+                No examination marks have been added yet.
+            </p>
+
+            <a href="{{ url_for('add_marks') }}"
+               class="btn btn-primary">
+
+                Add First Marks
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

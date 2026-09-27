@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MySchool - Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="login-page">
+
+<div class="login-container">
+
+    <div class="login-left">
+
+        <div class="school-logo">
+            🏫
+        </div>
+
+        <h1>MySchool</h1>
+
+        <p>
+            Student Management System
+        </p>
+
+        <div class="login-feature">
+            ✓ Student Management
+        </div>
+
+        <div class="login-feature">
+            ✓ Academic Records
+        </div>
+
+        <div class="login-feature">
+            ✓ Secure Database
+        </div>
+
+    </div>
+
+
+    <div class="login-right">
+
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+            Login to your administrator account
+        </p>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="alert">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form
+            action="{{ url_for('login_process') }}"
+            method="POST"
+        >
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                required
+            >
+
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="login-footer">
+            MySchool © 2026
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

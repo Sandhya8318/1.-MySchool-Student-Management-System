@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Report Card - MySchool</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="nav-brand">
+        🎓 MySchool
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('students') }}">
+            Students
+        </a>
+
+        <a href="{{ url_for('marks') }}">
+            Results
+        </a>
+
+        <a href="{{ url_for('report_card') }}">
+            Report Card
+        </a>
+
+        <a href="{{ url_for('logout') }}">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Student Report Card</h1>
+
+            <p>
+                Select a student to view their complete report card.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <form method="GET">
+
+            <div class="form-group">
+
+                <label>
+                    Select Student
+                </label>
+
+                <select
+                    id="studentSelect"
+                    required
+                >
+
+                    <option value="">
+                        Select Student
+                    </option>
+
+                    {% for student in students %}
+
+                    <option value="{{ student.id }}">
+
+                        {{ student.name }}
+                        -
+                        {{ student.roll_no }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                onclick="openReport()"
+            >
+                📄 View Report Card
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function openReport() {
+
+    const studentId =
+        document.getElementById("studentSelect").value;
+
+    if (!studentId) {
+
+        alert("Please select a student.");
+
+        return;
+    }
+
+    window.location.href =
+        "/report-card/" + studentId;
+}
+
+</script>
+
+</body>
+
+</html>
